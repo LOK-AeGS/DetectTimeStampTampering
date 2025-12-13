@@ -1,0 +1,13 @@
+# Target labels
+ libbpf
+# Source files and their labels
+/home/ags/aaaa/build-cmake/CMakeFiles/libbpf
+/home/ags/aaaa/build-cmake/CMakeFiles/libbpf.rule
+/home/ags/aaaa/build-cmake/CMakeFiles/libbpf-complete.rule
+/home/ags/aaaa/build-cmake/libbpf-prefix/src/libbpf-stamp/libbpf-build.rule
+/home/ags/aaaa/build-cmake/libbpf-prefix/src/libbpf-stamp/libbpf-configure.rule
+/home/ags/aaaa/build-cmake/libbpf-prefix/src/libbpf-stamp/libbpf-download.rule
+/home/ags/aaaa/build-cmake/libbpf-prefix/src/libbpf-stamp/libbpf-install.rule
+/home/ags/aaaa/build-cmake/libbpf-prefix/src/libbpf-stamp/libbpf-mkdir.rule
+/home/ags/aaaa/build-cmake/libbpf-prefix/src/libbpf-stamp/libbpf-patch.rule
+/home/ags/aaaa/build-cmake/libbpf-prefix/src/libbpf-stamp/libbpf-update.rule

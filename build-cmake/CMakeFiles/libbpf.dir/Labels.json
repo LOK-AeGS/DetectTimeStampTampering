@@ -1,0 +1,43 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/home/ags/aaaa/build-cmake/CMakeFiles/libbpf"
+		},
+		{
+			"file" : "/home/ags/aaaa/build-cmake/CMakeFiles/libbpf.rule"
+		},
+		{
+			"file" : "/home/ags/aaaa/build-cmake/CMakeFiles/libbpf-complete.rule"
+		},
+		{
+			"file" : "/home/ags/aaaa/build-cmake/libbpf-prefix/src/libbpf-stamp/libbpf-build.rule"
+		},
+		{
+			"file" : "/home/ags/aaaa/build-cmake/libbpf-prefix/src/libbpf-stamp/libbpf-configure.rule"
+		},
+		{
+			"file" : "/home/ags/aaaa/build-cmake/libbpf-prefix/src/libbpf-stamp/libbpf-download.rule"
+		},
+		{
+			"file" : "/home/ags/aaaa/build-cmake/libbpf-prefix/src/libbpf-stamp/libbpf-install.rule"
+		},
+		{
+			"file" : "/home/ags/aaaa/build-cmake/libbpf-prefix/src/libbpf-stamp/libbpf-mkdir.rule"
+		},
+		{
+			"file" : "/home/ags/aaaa/build-cmake/libbpf-prefix/src/libbpf-stamp/libbpf-patch.rule"
+		},
+		{
+			"file" : "/home/ags/aaaa/build-cmake/libbpf-prefix/src/libbpf-stamp/libbpf-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"libbpf"
+		],
+		"name" : "libbpf"
+	}
+}

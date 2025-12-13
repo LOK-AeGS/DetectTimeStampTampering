@@ -1,0 +1,19 @@
+{
+    packages = {
+        "/root/.xmake/packages/n/ndk/27.3/709b519d63f24ce5852e029a207974f8",
+        "/root/.xmake/packages/z/zlib/v1.3.1/eb8613809c6c4fe18aa1b626df4f3620",
+        "/root/.xmake/packages/n/ninja/v1.13.1/e7cc4735aeb048e6870171a23c4ee800",
+        "/root/.xmake/packages/z/zstd/v1.5.7/5ef4aa4af11a4057a9f707433a303429",
+        "/root/.xmake/packages/l/libintl/0.22.3/88dc594639b2459bb777267549a4723b",
+        "/root/.xmake/packages/a/argp-standalone/1.3/099a3b86e9a748ab8a29ba535d43f227",
+        "/root/.xmake/packages/e/elfutils/0.190/bd8f30d7dd5e4024960a6cce0d6f8ab2",
+        "/root/.xmake/packages/l/libbpf/v1.6.2/f984cdbbd4e549939338c240b82d55d2",
+        "/root/.xmake/packages/l/libcap/2.27/946920539efd4c39b523bde035ef6d3e",
+        "/root/.xmake/packages/z/zstd/v1.5.7/b7f056e2143b418a895dd18f17faee9e",
+        "/root/.xmake/packages/e/elfutils/0.190/ac340c4128c74a5aa305ebad4e30c261",
+        "/root/.xmake/packages/l/libffi/3.4.8/46686cf534074f4ebf90e4ab1f9662dd",
+        "/root/.xmake/packages/c/ca-certificates/20250131/e9ba281ae183402a80dc072d4d571c20",
+        "/root/.xmake/packages/p/python/3.13.2/82839672d2294b15a9281ba82b7c7a98",
+        "/root/.xmake/packages/l/linux-tools/6.7.6/7dae9d9b913a4feebbd200003718ee01"
+    }
+}

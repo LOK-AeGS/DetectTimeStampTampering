@@ -1,0 +1,7 @@
+{
+    errdata = "\27[1msrc/main.c:105:47: \27[0m\27[0;1;35mwarning: \27[0m\27[1millegal character encoding in string literal [-Winvalid-source-encoding]\27[0m\
+  105 |             printf(\"[%s] >>> File RENAMED (old\27[7m<A1><E6>\27[0mnew) <<<\\n\", filepath);\27[0m\
+      | \27[0;1;32m                                              ^~~~~~~~\
+\27[0m1 warning generated.\
+"
+}

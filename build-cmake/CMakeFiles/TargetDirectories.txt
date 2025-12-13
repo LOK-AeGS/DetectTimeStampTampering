@@ -1,0 +1,3 @@
+/home/ags/aaaa/build-cmake/CMakeFiles/gen_skel.dir
+/home/ags/aaaa/build-cmake/CMakeFiles/edit_cache.dir
+/home/ags/aaaa/build-cmake/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,226 @@
+{
+    nasm_arch_x86_64_plat_linux = {
+        __checked = true,
+        plat = "linux",
+        arch = "x86_64"
+    },
+    ["tool_target_probe_android_arm64-v8a_cc"] = {
+        program = "/root/.xmake/packages/n/ndk/27.3/709b519d63f24ce5852e029a207974f8/toolchains/llvm/prebuilt/linux-x86_64/bin/clang",
+        toolchain_info = {
+            arch = "arm64-v8a",
+            plat = "android",
+            name = "ndk",
+            cachekey = "ndk_arch_arm64-v8a_packages_ndk_plat_android_sdkver_23"
+        },
+        toolname = "clang"
+    },
+    ["rust_arch_arm64-v8a_plat_android"] = {
+        __global = true,
+        plat = "android",
+        __checked = true,
+        arch = "arm64-v8a"
+    },
+    ["fpc_arch_arm64-v8a_plat_linux"] = {
+        __checked = true,
+        plat = "linux",
+        arch = "arm64-v8a"
+    },
+    ["ndk_arch_arm64-v8a_packages_ndk_plat_android_sdkver_23"] = {
+        packages = "ndk",
+        ndkver = 27,
+        ndk_sysroot = "/root/.xmake/packages/n/ndk/27.3/709b519d63f24ce5852e029a207974f8/toolchains/llvm/prebuilt/linux-x86_64/sysroot",
+        bindir = "/root/.xmake/packages/n/ndk/27.3/709b519d63f24ce5852e029a207974f8/toolchains/llvm/prebuilt/linux-x86_64/bin",
+        sdkver = "23",
+        ndk_sdkver = "23",
+        plat = "android",
+        ndk = "/root/.xmake/packages/n/ndk/27.3/709b519d63f24ce5852e029a207974f8",
+        __checked = true,
+        cross = "aarch64-linux-android-",
+        llvm_toolchain = "/root/.xmake/packages/n/ndk/27.3/709b519d63f24ce5852e029a207974f8/toolchains/llvm/prebuilt/linux-x86_64",
+        arch = "arm64-v8a"
+    },
+    go_arch_x86_64_plat_linux = {
+        __checked = true,
+        plat = "linux",
+        arch = "x86_64"
+    },
+    fasm_arch_x86_64_plat_linux = {
+        __checked = true,
+        plat = "linux",
+        arch = "x86_64"
+    },
+    ["yasm_arch_arm64-v8a_plat_linux"] = {
+        __checked = true,
+        plat = "linux",
+        arch = "arm64-v8a"
+    },
+    cuda_arch_x86_64_plat_linux = {
+        __checked = true,
+        plat = "linux",
+        arch = "x86_64"
+    },
+    rust_arch_x86_64_plat_linux = {
+        __checked = true,
+        plat = "linux",
+        arch = "x86_64"
+    },
+    tool_platform_linux_x86_64_cc = {
+        program = "/usr/bin/gcc",
+        toolchain_info = {
+            arch = "x86_64",
+            plat = "linux",
+            name = "gcc",
+            cachekey = "gcc_arch_x86_64_plat_linux"
+        },
+        toolname = "gcc"
+    },
+    ["swift_arch_arm64-v8a_plat_linux"] = {
+        __checked = true,
+        plat = "linux",
+        arch = "arm64-v8a"
+    },
+    ["envs_arch_arm64-v8a_plat_linux"] = {
+        __checked = true,
+        plat = "linux",
+        arch = "arm64-v8a"
+    },
+    yasm_arch_x86_64_plat_linux = {
+        __checked = true,
+        plat = "linux",
+        arch = "x86_64"
+    },
+    ["tool_target_probe_android_arm64-v8a_ld"] = {
+        program = "/root/.xmake/packages/n/ndk/27.3/709b519d63f24ce5852e029a207974f8/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++",
+        toolchain_info = {
+            name = "ndk",
+            plat = "android",
+            arch = "arm64-v8a",
+            cachekey = "ndk_arch_arm64-v8a_packages_ndk_plat_android_sdkver_23"
+        },
+        toolname = "clangxx"
+    },
+    ["ndk_arch_arm64-v8a_packages_ndk_plat_linux_sdkver_23"] = {
+        packages = "ndk",
+        ndkver = 27,
+        ndk_sysroot = "/root/.xmake/packages/n/ndk/27.3/709b519d63f24ce5852e029a207974f8/toolchains/llvm/prebuilt/linux-x86_64/sysroot",
+        bindir = "/root/.xmake/packages/n/ndk/27.3/709b519d63f24ce5852e029a207974f8/toolchains/llvm/prebuilt/linux-x86_64/bin",
+        sdkver = "23",
+        ndk_sdkver = "23",
+        plat = "linux",
+        ndk = "/root/.xmake/packages/n/ndk/27.3/709b519d63f24ce5852e029a207974f8",
+        __checked = true,
+        cross = "aarch64-linux-android-",
+        llvm_toolchain = "/root/.xmake/packages/n/ndk/27.3/709b519d63f24ce5852e029a207974f8/toolchains/llvm/prebuilt/linux-x86_64",
+        arch = "arm64-v8a"
+    },
+    gfortran_arch_x86_64_plat_linux = {
+        __checked = true,
+        plat = "linux",
+        arch = "x86_64"
+    },
+    ["go_arch_arm64-v8a_plat_linux"] = {
+        __checked = true,
+        plat = "linux",
+        arch = "arm64-v8a"
+    },
+    nim_arch_x86_64_plat_linux = {
+        __checked = false,
+        plat = "linux",
+        arch = "x86_64"
+    },
+    ["nasm_arch_arm64-v8a_plat_linux"] = {
+        __checked = true,
+        plat = "linux",
+        arch = "arm64-v8a"
+    },
+    ["tool_target_probe.bpf_linux_arm64-v8a_cc"] = {
+        program = "/root/.xmake/packages/n/ndk/27.3/709b519d63f24ce5852e029a207974f8/toolchains/llvm/prebuilt/linux-x86_64/bin/clang",
+        toolchain_info = {
+            arch = "arm64-v8a",
+            plat = "linux",
+            name = "ndk",
+            cachekey = "ndk_arch_arm64-v8a_packages_ndk_plat_linux_sdkver_23"
+        },
+        toolname = "clang"
+    },
+    ["rust_arch_arm64-v8a_plat_linux"] = {
+        __checked = true,
+        plat = "linux",
+        arch = "arm64-v8a"
+    },
+    ["cuda_arch_arm64-v8a_plat_linux"] = {
+        __checked = true,
+        plat = "linux",
+        arch = "arm64-v8a"
+    },
+    ["gfortran_arch_arm64-v8a_plat_linux"] = {
+        __checked = true,
+        plat = "linux",
+        arch = "arm64-v8a"
+    },
+    ["gcc_arch_arm64-v8a_plat_linux"] = {
+        __checked = {
+            program = "/usr/bin/gcc",
+            name = "gcc"
+        },
+        plat = "linux",
+        arch = "arm64-v8a"
+    },
+    envs_arch_x86_64_plat_linux = {
+        __checked = true,
+        plat = "linux",
+        arch = "x86_64"
+    },
+    gcc_arch_x86_64_plat_linux = {
+        __checked = {
+            program = "/usr/bin/gcc",
+            name = "gcc"
+        },
+        plat = "linux",
+        arch = "x86_64"
+    },
+    fpc_arch_x86_64_plat_linux = {
+        __checked = true,
+        plat = "linux",
+        arch = "x86_64"
+    },
+    ["fasm_arch_arm64-v8a_plat_linux"] = {
+        __checked = true,
+        plat = "linux",
+        arch = "arm64-v8a"
+    },
+    swift_arch_x86_64_plat_linux = {
+        __checked = true,
+        plat = "linux",
+        arch = "x86_64"
+    },
+    ["ndk_arch_arm64-v8a_plat_android"] = {
+        ndkver = 25,
+        __global = true,
+        bindir = "/root/Android/ndk/android-ndk-r25c/toolchains/llvm/prebuilt/linux-x86_64/bin",
+        __checked = true,
+        cross = "aarch64-linux-android-",
+        ndk_sdkver = "23",
+        ndk_sysroot = "/root/Android/ndk/android-ndk-r25c/toolchains/llvm/prebuilt/linux-x86_64/sysroot",
+        ndk = "/root/Android/ndk/android-ndk-r25c",
+        plat = "android",
+        llvm_toolchain = "/root/Android/ndk/android-ndk-r25c/toolchains/llvm/prebuilt/linux-x86_64",
+        arch = "arm64-v8a"
+    },
+    ["envs_arch_arm64-v8a_plat_android"] = {
+        __global = true,
+        plat = "android",
+        __checked = true,
+        arch = "arm64-v8a"
+    },
+    tool_platform_linux_x86_64_ld = {
+        program = "/usr/bin/g++",
+        toolchain_info = {
+            arch = "x86_64",
+            plat = "linux",
+            name = "gcc",
+            cachekey = "gcc_arch_x86_64_plat_linux"
+        },
+        toolname = "gxx"
+    }
+}

@@ -1,0 +1,99 @@
+{
+    ndk = {
+        envs = {
+            ANDROID_NDK_HOME = {
+                "/root/.xmake/packages/n/ndk/27.3/709b519d63f24ce5852e029a207974f8"
+            },
+            ANDROID_NDK_ROOT = {
+                "/root/.xmake/packages/n/ndk/27.3/709b519d63f24ce5852e029a207974f8"
+            },
+            PATH = {
+                "/root/.xmake/packages/n/ndk/27.3/709b519d63f24ce5852e029a207974f8/bin"
+            }
+        },
+        __requirestr = "ndk >=22.x",
+        installdir = "/root/.xmake/packages/n/ndk/27.3/709b519d63f24ce5852e029a207974f8",
+        __enabled = true
+    },
+    libbpf = {
+        envs = {
+            PATH = {
+                "/root/.xmake/packages/m/m4/1.4.19/8b7c7260096844c1a8b1c8d773e64b3d/bin",
+                "/root/.xmake/packages/n/ninja/v1.13.1/e7cc4735aeb048e6870171a23c4ee800/bin",
+                "/root/.xmake/packages/c/cmake/4.0.3/b686e3b7911246e2bfa1b52ae27762fe/bin"
+            }
+        },
+        links = {
+            "bpf",
+            "dw",
+            "elf",
+            "zstd",
+            "z",
+            "intl",
+            "argp"
+        },
+        license = "BSD-2-Clause",
+        sysincludedirs = {
+            "/root/.xmake/packages/l/libbpf/v1.6.2/f984cdbbd4e549939338c240b82d55d2/include",
+            "/root/.xmake/packages/l/libbpf/v1.6.2/f984cdbbd4e549939338c240b82d55d2/include/uapi",
+            "/root/.xmake/packages/e/elfutils/0.190/bd8f30d7dd5e4024960a6cce0d6f8ab2/include",
+            "/root/.xmake/packages/z/zstd/v1.5.7/5ef4aa4af11a4057a9f707433a303429/include",
+            "/root/.xmake/packages/z/zlib/v1.3.1/eb8613809c6c4fe18aa1b626df4f3620/include",
+            "/root/.xmake/packages/l/libintl/0.22.3/88dc594639b2459bb777267549a4723b/include",
+            "/root/.xmake/packages/a/argp-standalone/1.3/099a3b86e9a748ab8a29ba535d43f227/include"
+        },
+        __enabled = true,
+        version = "v1.6.2",
+        installdir = "/root/.xmake/packages/l/libbpf/v1.6.2/f984cdbbd4e549939338c240b82d55d2",
+        linkdirs = {
+            "/root/.xmake/packages/l/libbpf/v1.6.2/f984cdbbd4e549939338c240b82d55d2/lib",
+            "/root/.xmake/packages/e/elfutils/0.190/bd8f30d7dd5e4024960a6cce0d6f8ab2/lib",
+            "/root/.xmake/packages/z/zstd/v1.5.7/5ef4aa4af11a4057a9f707433a303429/lib",
+            "/root/.xmake/packages/z/zlib/v1.3.1/eb8613809c6c4fe18aa1b626df4f3620/lib",
+            "/root/.xmake/packages/l/libintl/0.22.3/88dc594639b2459bb777267549a4723b/lib",
+            "/root/.xmake/packages/a/argp-standalone/1.3/099a3b86e9a748ab8a29ba535d43f227/lib"
+        },
+        __requirestr = "libbpf",
+        libfiles = {
+            "/root/.xmake/packages/l/libbpf/v1.6.2/f984cdbbd4e549939338c240b82d55d2/lib/libbpf.a",
+            "/root/.xmake/packages/e/elfutils/0.190/bd8f30d7dd5e4024960a6cce0d6f8ab2/lib/libdw.a",
+            "/root/.xmake/packages/e/elfutils/0.190/bd8f30d7dd5e4024960a6cce0d6f8ab2/lib/libelf.a",
+            "/root/.xmake/packages/z/zstd/v1.5.7/5ef4aa4af11a4057a9f707433a303429/lib/libzstd.a",
+            "/root/.xmake/packages/z/zlib/v1.3.1/eb8613809c6c4fe18aa1b626df4f3620/lib/libz.a",
+            "/root/.xmake/packages/l/libintl/0.22.3/88dc594639b2459bb777267549a4723b/lib/libintl.a",
+            "/root/.xmake/packages/a/argp-standalone/1.3/099a3b86e9a748ab8a29ba535d43f227/lib/libargp.a"
+        },
+        static = true
+    },
+    ["linux-tools"] = {
+        envs = {
+            PATH = {
+                "/root/.xmake/packages/l/linux-tools/6.7.6/7dae9d9b913a4feebbd200003718ee01/bin",
+                "/root/.xmake/packages/l/linux-tools/6.7.6/7dae9d9b913a4feebbd200003718ee01/sbin",
+                "/root/.xmake/packages/m/m4/1.4.19/8b7c7260096844c1a8b1c8d773e64b3d/bin",
+                "/root/.xmake/packages/n/ninja/v1.13.1/e7cc4735aeb048e6870171a23c4ee800/bin",
+                "/root/.xmake/packages/c/cmake/4.0.3/b686e3b7911246e2bfa1b52ae27762fe/bin",
+                "/root/.xmake/packages/p/python/3.13.2/82839672d2294b15a9281ba82b7c7a98/bin",
+                "/root/.xmake/packages/p/python/3.13.2/82839672d2294b15a9281ba82b7c7a98/bin",
+                "/root/.xmake/packages/p/python/3.13.2/82839672d2294b15a9281ba82b7c7a98/Scripts"
+            },
+            PYTHONPATH = {
+                "/root/.xmake/packages/p/python/3.13.2/82839672d2294b15a9281ba82b7c7a98/lib/python3.13/site-packages"
+            },
+            SSL_CERT_FILE = {
+                "/root/.xmake/packages/c/ca-certificates/20250131/e9ba281ae183402a80dc072d4d571c20/cacert.pem"
+            },
+            SSL_CERT_DIR = {
+                "/root/.xmake/packages/c/ca-certificates/20250131/e9ba281ae183402a80dc072d4d571c20"
+            }
+        },
+        installdir = "/root/.xmake/packages/l/linux-tools/6.7.6/7dae9d9b913a4feebbd200003718ee01",
+        __requireconfs = {
+            configs = {
+                bpftool = true
+            }
+        },
+        __requirestr = "linux-tools",
+        __enabled = true
+    }
+}

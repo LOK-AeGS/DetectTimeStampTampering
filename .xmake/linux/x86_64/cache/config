@@ -1,0 +1,13 @@
+{
+    options = {
+        arch = "arm64-v8a",
+        mode = "release",
+        ndk = "/root/Android/ndk/android-ndk-r25c",
+        plat = "android",
+        clean = true
+    },
+    recheck = false,
+    mtimes = {
+        ["xmake.lua"] = 1757421839
+    }
+}
