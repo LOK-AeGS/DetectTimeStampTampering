@@ -1,227 +1,44 @@
-#define _GNU_SOURCE
-#include <sys/types.h>
-#include <sys/inotify.h>
-#include <sys/stat.h>
-#include <time.h>
-#include <limits.h>
-#include <unistd.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
-#include <libgen.h>
+#include <sys/time.h>
+#include <time.h>
+#include <unistd.h>
 
-#define EVENT_SIZE (sizeof(struct inotify_event))
-#define BUF_LEN    (2048 * (EVENT_SIZE + NAME_MAX))
-#define EPSILON    60   /* ±1 minute */
+#define ITERATIONS 10000 // 횟수는 시스템 영향 고려하여 조절 (settimeofday는 시간 변경하므로 주의!)
 
-/* =========================================================
- *  BOOTTIME anchor
- * ========================================================= */
-static time_t wall_anchor;
-static struct timespec boot_anchor;
+int main() {
+    struct timeval tv;
+    struct timespec start, end;
+    long long total_ns = 0;
 
-static void init_anchor(void)
-{
-    wall_anchor = time(NULL);
-    clock_gettime(CLOCK_BOOTTIME, &boot_anchor);
+    // 현재 시간 가져오기 (테스트용 더미 값)
+    gettimeofday(&tv, NULL); 
+	int fail = 0;
+int ok = 0;
+    // 측정 시작
+    clock_gettime(CLOCK_MONOTONIC, &start);
+
+    for (int i = 0; i < ITERATIONS; i++) {
+        // settimeofday 호출 (권한 필요, 실제 시간 변경됨 주의)
+        // 성능 측정만을 위함이라면 실패하는 호출(권한 없음 등)로도 
+        // kprobe 진입 오버헤드는 측정 가능할 수 있음
+        if (settimeofday(&tv, NULL) < 0) {
+    // errno만 카운트
+    fail++;
+} else {
+    ok++;
 }
-
-static time_t expected_wall_time(void)
-{
-    struct timespec now;
-    clock_gettime(CLOCK_BOOTTIME, &now);
-    return wall_anchor + (now.tv_sec - boot_anchor.tv_sec);
-}
-
-/* =========================================================
- *  FILE TIME STATE
- * ========================================================= */
-enum file_time_state {
-    FILE_NORMAL,
-    FILE_PAST,
-    FILE_FUTURE
-};
-
-static enum file_time_state
-check_file_time(time_t file_time)
-{
-    time_t expected = expected_wall_time();
-    time_t diff = file_time - expected;
-
-    if (diff > EPSILON)
-        return FILE_FUTURE;
-    if (diff < -EPSILON)
-        return FILE_PAST;
-    return FILE_NORMAL;
-}
-
-static const char *file_state_str(enum file_time_state s)
-{
-    switch (s) {
-    case FILE_PAST:   return "FILE_PAST";
-    case FILE_FUTURE: return "FILE_FUTURE";
-    default:          return "FILE_NORMAL";
-    }
-}
-
-/* =========================================================
- *  SYSTEM TIME STATE (from time_changed.txt)
- * ========================================================= */
-static const char *read_time_state(const char *log_path)
-{
-    static char state[16] = "UNKNOWN";
-    char line[512];
-
-    FILE *fp = fopen(log_path, "r");
-    if (!fp)
-        return state;
-
-    while (fgets(line, sizeof(line), fp)) {
-        if (strstr(line, "[FUTURE]"))
-            strcpy(state, "FUTURE");
-        else if (strstr(line, "[PAST]"))
-            strcpy(state, "PAST");
-        else if (strstr(line, "[CURRENT]"))
-            strcpy(state, "CURRENT");
     }
 
-    fclose(fp);
-    return state;
-}
+    // 측정 종료
+    clock_gettime(CLOCK_MONOTONIC, &end);
 
-/* =========================================================
- *  MAIN
- * ========================================================= */
-int main(int argc, char **argv)
-{
-    if (argc < 3) {
-        fprintf(stderr,
-            "usage: %s <target_file> <time_changed.txt>\n", argv[0]);
-        return 1;
-    }
+    total_ns = (end.tv_sec - start.tv_sec) * 1000000000LL + (end.tv_nsec - start.tv_nsec);
+    
+    printf("Iterations: %d\n", ITERATIONS);
+    printf("Total Time: %lld ns\n", total_ns);
+    printf("Avg Time per Call: %lld ns\n", total_ns / ITERATIONS);
+	printf("success: %d\n", ok);
+printf("failed: %d\n", fail);
 
-    const char *target_path = argv[1];
-    const char *time_log    = argv[2];
-
-    char realpath_buf[PATH_MAX];
-    if (!realpath(target_path, realpath_buf)) {
-        perror("realpath");
-        return 1;
-    }
-
-    char *p1 = strdup(realpath_buf);
-    char *p2 = strdup(realpath_buf);
-    char *dir  = dirname(p1);
-    char *file = basename(p2);
-
-    struct stat prev_st;
-    if (stat(realpath_buf, &prev_st) != 0) {
-        perror("stat");
-        return 1;
-    }
-
-    init_anchor();
-
-    int fd = inotify_init1(IN_NONBLOCK);
-    if (fd < 0) {
-        perror("inotify_init");
-        return 1;
-    }
-
-    int file_wd = inotify_add_watch(
-        fd,
-        realpath_buf,
-        IN_ATTRIB | IN_MODIFY | IN_CLOSE_WRITE |
-        IN_DELETE_SELF | IN_MOVE_SELF | IN_IGNORED
-    );
-
-    int dir_wd = inotify_add_watch(
-        fd,
-        dir,
-        IN_CREATE | IN_MOVED_TO
-    );
-
-    if (file_wd < 0 || dir_wd < 0) {
-        perror("inotify_add_watch");
-        return 1;
-    }
-
-    printf("[Watcher] Monitoring %s\n", realpath_buf);
-
-    char buf[BUF_LEN];
-
-    while (1) {
-        int len = read(fd, buf, sizeof(buf));
-        if (len < 0) {
-            if (errno == EAGAIN) {
-                usleep(100000);
-                continue;
-            }
-            break;
-        }
-
-        for (int i = 0; i < len; ) {
-            struct inotify_event *e =
-                (struct inotify_event *)&buf[i];
-
-            /* ----- directory: file recreated (vi etc.) ----- */
-            if (e->wd == dir_wd && e->len > 0 &&
-                strcmp(e->name, file) == 0) {
-
-                if (e->mask & IN_MOVED_TO) {
-                    printf("[System] File recreated\n");
-                    int new_wd = inotify_add_watch(
-                        fd,
-                        realpath_buf,
-                        IN_ATTRIB | IN_MODIFY | IN_CLOSE_WRITE |
-                        IN_DELETE_SELF | IN_MOVE_SELF | IN_IGNORED
-                    );
-                    if (new_wd >= 0)
-                        file_wd = new_wd;
-
-                    stat(realpath_buf, &prev_st);
-                }
-            }
-
-            /* ----- file events ----- */
-            else if (e->wd == file_wd &&
-                     (e->mask & (IN_ATTRIB | IN_MODIFY | IN_CLOSE_WRITE))) {
-
-                struct stat cur_st;
-                if (stat(realpath_buf, &cur_st) == 0) {
-
-                    const char *sys_state =
-                        read_time_state(time_log);
-
-                    if (cur_st.st_mtime != prev_st.st_mtime) {
-                        enum file_time_state fs =
-                            check_file_time(cur_st.st_mtime);
-                        printf(
-                            "[ALERT] mtime changed | system=%s | %s\n",
-                            sys_state, file_state_str(fs)
-                        );
-                    }
-
-                    if (cur_st.st_atime != prev_st.st_atime) {
-                        enum file_time_state fs =
-                            check_file_time(cur_st.st_atime);
-                        printf(
-                            "[ALERT] atime changed | system=%s | %s\n",
-                            sys_state, file_state_str(fs)
-                        );
-                    }
-
-                    prev_st = cur_st;
-                }
-            }
-
-            i += EVENT_SIZE + e->len;
-        }
-    }
-
-    close(fd);
-    free(p1);
-    free(p2);
     return 0;
 }
