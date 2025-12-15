@@ -12,7 +12,8 @@ int main() {
 
     // 현재 시간 가져오기 (테스트용 더미 값)
     gettimeofday(&tv, NULL); 
-
+	int fail = 0;
+int ok = 0;
     // 측정 시작
     clock_gettime(CLOCK_MONOTONIC, &start);
 
@@ -36,6 +37,8 @@ int main() {
     printf("Iterations: %d\n", ITERATIONS);
     printf("Total Time: %lld ns\n", total_ns);
     printf("Avg Time per Call: %lld ns\n", total_ns / ITERATIONS);
+	printf("success: %d\n", ok);
+printf("failed: %d\n", fail);
 
     return 0;
 }
