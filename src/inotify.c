@@ -10,10 +10,16 @@
 #include <string.h>
 #include <errno.h>
 #include <libgen.h>
+#include <fcntl.h>
 
 #define EVENT_SIZE (sizeof(struct inotify_event))
 #define BUF_LEN    (2048 * (EVENT_SIZE + NAME_MAX))
 #define EPSILON    60   /* ±1 minute */
+
+/* =========================================================
+ *  ALERT LOG FD
+ * ========================================================= */
+static int alert_fd = -1;
 
 /* =========================================================
  *  BOOTTIME anchor
@@ -91,6 +97,24 @@ static const char *read_time_state(const char *log_path)
 }
 
 /* =========================================================
+ *  LOG HELPER (printf 대체)
+ * ========================================================= */
+static void log_alert(const char *fmt, ...)
+{
+    if (alert_fd < 0)
+        return;
+
+    char buf[512];
+    va_list ap;
+    va_start(ap, fmt);
+    int len = vsnprintf(buf, sizeof(buf), fmt, ap);
+    va_end(ap);
+
+    if (len > 0)
+        write(alert_fd, buf, len);
+}
+
+/* =========================================================
  *  MAIN
  * ========================================================= */
 int main(int argc, char **argv)
@@ -103,6 +127,14 @@ int main(int argc, char **argv)
 
     const char *target_path = argv[1];
     const char *time_log    = argv[2];
+
+    /* open alert log */
+    alert_fd = open("/data/local/tmp/alerts.log",
+                    O_WRONLY | O_CREAT | O_APPEND, 0644);
+    if (alert_fd < 0) {
+        perror("open alerts.log");
+        return 1;
+    }
 
     char realpath_buf[PATH_MAX];
     if (!realpath(target_path, realpath_buf)) {
@@ -147,6 +179,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
+    /* 감시 시작 메시지는 stdout 유지 */
     printf("[Watcher] Monitoring %s\n", realpath_buf);
 
     char buf[BUF_LEN];
@@ -165,23 +198,23 @@ int main(int argc, char **argv)
             struct inotify_event *e =
                 (struct inotify_event *)&buf[i];
 
-            /* ----- directory: file recreated (vi etc.) ----- */
+            /* ----- directory: file recreated ----- */
             if (e->wd == dir_wd && e->len > 0 &&
-                strcmp(e->name, file) == 0) {
+                strcmp(e->name, file) == 0 &&
+                (e->mask & IN_MOVED_TO)) {
 
-                if (e->mask & IN_MOVED_TO) {
-                    printf("[System] File recreated\n");
-                    int new_wd = inotify_add_watch(
-                        fd,
-                        realpath_buf,
-                        IN_ATTRIB | IN_MODIFY | IN_CLOSE_WRITE |
-                        IN_DELETE_SELF | IN_MOVE_SELF | IN_IGNORED
-                    );
-                    if (new_wd >= 0)
-                        file_wd = new_wd;
+                log_alert("[System] File recreated\n");
 
-                    stat(realpath_buf, &prev_st);
-                }
+                int new_wd = inotify_add_watch(
+                    fd,
+                    realpath_buf,
+                    IN_ATTRIB | IN_MODIFY | IN_CLOSE_WRITE |
+                    IN_DELETE_SELF | IN_MOVE_SELF | IN_IGNORED
+                );
+                if (new_wd >= 0)
+                    file_wd = new_wd;
+
+                stat(realpath_buf, &prev_st);
             }
 
             /* ----- file events ----- */
@@ -197,7 +230,7 @@ int main(int argc, char **argv)
                     if (cur_st.st_mtime != prev_st.st_mtime) {
                         enum file_time_state fs =
                             check_file_time(cur_st.st_mtime);
-                        printf(
+                        log_alert(
                             "[ALERT] mtime changed | system=%s | %s\n",
                             sys_state, file_state_str(fs)
                         );
@@ -206,7 +239,7 @@ int main(int argc, char **argv)
                     if (cur_st.st_atime != prev_st.st_atime) {
                         enum file_time_state fs =
                             check_file_time(cur_st.st_atime);
-                        printf(
+                        log_alert(
                             "[ALERT] atime changed | system=%s | %s\n",
                             sys_state, file_state_str(fs)
                         );
@@ -221,6 +254,7 @@ int main(int argc, char **argv)
     }
 
     close(fd);
+    close(alert_fd);
     free(p1);
     free(p2);
     return 0;
