@@ -15,6 +15,9 @@
 #define EVENT_SIZE (sizeof(struct inotify_event))
 #define BUF_LEN    (2048 * (EVENT_SIZE + NAME_MAX))
 #define EPSILON    60   /* ±1 minute */
+/*
+
+m_time, a_time 변경 + write으로 기록
 
 /* =========================================================
  *  ALERT LOG FD
@@ -72,32 +75,7 @@ static const char *file_state_str(enum file_time_state s)
 }
 
 /* =========================================================
- *  SYSTEM TIME STATE (from time_changed.txt)
- * ========================================================= */
-static const char *read_time_state(const char *log_path)
-{
-    static char state[16] = "UNKNOWN";
-    char line[512];
-
-    FILE *fp = fopen(log_path, "r");
-    if (!fp)
-        return state;
-
-    while (fgets(line, sizeof(line), fp)) {
-        if (strstr(line, "[FUTURE]"))
-            strcpy(state, "FUTURE");
-        else if (strstr(line, "[PAST]"))
-            strcpy(state, "PAST");
-        else if (strstr(line, "[CURRENT]"))
-            strcpy(state, "CURRENT");
-    }
-
-    fclose(fp);
-    return state;
-}
-
-/* =========================================================
- *  LOG HELPER (printf 대체)
+ *  LOG HELPER
  * ========================================================= */
 static void log_alert(const char *fmt, ...)
 {
@@ -119,14 +97,12 @@ static void log_alert(const char *fmt, ...)
  * ========================================================= */
 int main(int argc, char **argv)
 {
-    if (argc < 3) {
-        fprintf(stderr,
-            "usage: %s <target_file> <time_changed.txt>\n", argv[0]);
+    if (argc < 2) {
+        fprintf(stderr, "usage: %s <target_file>\n", argv[0]);
         return 1;
     }
 
     const char *target_path = argv[1];
-    const char *time_log    = argv[2];
 
     /* open alert log */
     alert_fd = open("/data/local/tmp/alerts.log",
@@ -179,7 +155,6 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    /* 감시 시작 메시지는 stdout 유지 */
     printf("[Watcher] Monitoring %s\n", realpath_buf);
 
     char buf[BUF_LEN];
@@ -224,15 +199,12 @@ int main(int argc, char **argv)
                 struct stat cur_st;
                 if (stat(realpath_buf, &cur_st) == 0) {
 
-                    const char *sys_state =
-                        read_time_state(time_log);
-
                     if (cur_st.st_mtime != prev_st.st_mtime) {
                         enum file_time_state fs =
                             check_file_time(cur_st.st_mtime);
                         log_alert(
-                            "[ALERT] mtime changed | system=%s | %s\n",
-                            sys_state, file_state_str(fs)
+                            "[ALERT] mtime changed | %s\n",
+                            file_state_str(fs)
                         );
                     }
 
@@ -240,8 +212,8 @@ int main(int argc, char **argv)
                         enum file_time_state fs =
                             check_file_time(cur_st.st_atime);
                         log_alert(
-                            "[ALERT] atime changed | system=%s | %s\n",
-                            sys_state, file_state_str(fs)
+                            "[ALERT] atime changed | %s\n",
+                            file_state_str(fs)
                         );
                     }
 
