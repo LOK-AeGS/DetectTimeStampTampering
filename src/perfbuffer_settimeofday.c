@@ -107,6 +107,9 @@ static void handle_event(void *ctx, int cpu, void *data, unsigned int size)
     time_t new_wall = (time_t)e->tv_sec;
 
     time_t diff;
+    /* * classify 함수는 new_wall과 expected의 차이를 계산하여
+     * 오차 범위(EPSILON_SEC) 이내면 "CURRENT"를 반환합니다.
+     */
     const char *cls = classify(new_wall, expected, &diff);
 
     log_alert(
@@ -120,11 +123,28 @@ static void handle_event(void *ctx, int cpu, void *data, unsigned int size)
         (unsigned long long)e->ktime_ns
     );
 
-    /* attacker time을 신뢰하지 않고, trusted 기준 유지 */
-    trusted_wall = expected;
-    trusted_boot = now_boot;
+    /* * [수정된 로직] Drift 보정 (Re-anchoring)
+     * * 상태가 "CURRENT" (정상 범위 내)라면, 이 시간 변경은 
+     * NTP 동기화이거나 미세한 수동 조정일 가능성이 높습니다.
+     * * 이때 기준점(trusted_wall/boot)을 현재 시점으로 '갱신'해줘야
+     * 그동안 누적된 Monotonic Clock의 오차(Drift)가 사라집니다.
+     */
+    if (strcmp(cls, "CURRENT") == 0) {
+        // 정상적인 변경이라면, 새로운 시간을 신뢰할 수 있는 기준으로 삼음
+        trusted_wall = new_wall; 
+        trusted_boot = now_boot;
+        
+        // (선택) 디버깅용 로그: 앵커가 갱신되었음을 기록
+        // log_alert("[INFO] Anchor re-synced to absorb drift.\n");
+    } else {
+        // 공격이나 오류로 판단되면 기준점을 갱신하지 않고 기존 기준 유지
+        // (이 부분은 정책에 따라 다름. 공격 시도 후에도 기준을 유지해야 다음 공격 탐지 가능)
+        // 기존 코드: trusted_wall = expected; -> 이 방식은 계속 오차가 누적됨
+        
+        // 변경 없음: 오차가 큰 비정상 변경 시에는 기준점을 바꾸지 않아야 
+        // 사용자가 다시 원래대로 돌려놓을 때까지 계속 경고를 띄울 수 있음.
+    }
 }
-
 static void handle_lost(void *ctx, int cpu, __u64 lost_cnt)
 {
     (void)ctx;
